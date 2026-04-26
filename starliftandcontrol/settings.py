@@ -21,6 +21,7 @@ ALLOWED_HOSTS = [
     'starliftandcontroller.xyz', 
     'www.starliftandcontroller.xyz',
     '.onrender.com', # This allows Render's internal health checks
+    '.starliftandcontroller.xyz'
 ]
 
 # Application definition
@@ -89,6 +90,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://starliftandcontroller.xyz", 
     "https://www.starliftandcontroller.xyz",
     "https://*.onrender.com", # Added https:// and a wildcard *
+    "https://*.starliftandcontroller.xyz", # Added https:// and a wildcard *
+
 ]
 
 # Password validation
