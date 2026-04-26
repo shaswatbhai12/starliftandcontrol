@@ -1,0 +1,163 @@
+{% extends "home/basic.html" %}
+
+{% block title %}Home - Star lift and Controller{% endblock %}
+
+{% block content %}
+<!-- Carousel Section -->
+<div x-data="{ currentIndex: 0, totalSlides: {{ carousel_images|length }},
+               autoSlide() { 
+                   setInterval(() => { this.currentIndex = (this.currentIndex + 1) % this.totalSlides }, 3500);
+               }
+             }"
+     x-init="autoSlide()" class="relative w-full h-[500px] mx-auto overflow-hidden #7dafff" style="background-color: rgb(245, 247, 250);">
+
+    <!-- Image Slides -->
+    <div class="flex transition-transform duration-700 ease-in-out w-full h-full "
+         :style="'transform: translateX(-' + (currentIndex * 100) + '%)'">
+        {% for img in carousel_images %}
+        <div class="w-full flex-shrink-0 h-full">
+            <img src="{{ img.image.url }}" alt="Slide {{ forloop.counter }}"
+                 class="w-full h-full object-contain">
+
+            {% if img.caption %}
+            <p class="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded">
+                {{ img.caption }}
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Prev Button -->
+    <button @click="currentIndex = (currentIndex - 1 + totalSlides) % totalSlides"
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-2xl">
+        &#10094;
+    </button>
+
+    <!-- Next Button -->
+    <button @click="currentIndex = (currentIndex + 1) % totalSlides"
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 text-white px-4 py-2 rounded-full text-2xl">
+        &#10095;
+    </button>
+
+</div>
+<!-- News Ticker -->
+<!-- <div class="overflow-hidden whitespace-nowrap bg-green-400 text-white py-2 font-bold text-lg">
+    <div class="inline-block animate-marquee">
+        Safety is our priority &nbsp; | &nbsp; Quality matters &nbsp; | &nbsp; Reliable service &nbsp; | &nbsp; Innovative solutions &nbsp; | &nbsp; Customer satisfaction guaranteed &nbsp; | &nbsp; Elevate your experience with us!
+    </div>
+</div> -->
+
+<style>
+@keyframes marquee {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 15s linear infinite;
+}
+</style>
+
+
+<!-- About Us Section -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold text-gray-800">About Us</h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+            We are a leading provider of innovative and high-quality elevator solutions, 
+            ensuring safety, efficiency, and reliability for residential, commercial, 
+            and industrial spaces. Our mission is to elevate experiences with cutting-edge technology.
+        </p>
+        <div class="mt-8">
+            <a href="/about" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition">
+                Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section class="py-16 bg-gray-100">
+    <div class="container mx-auto text-center">
+        <h2 class="text-4xl font-bold text-gray-800 mb-8">Our Products</h2>
+        <p class="text-gray-600 mb-12">Explore our range of innovative and high-quality elevator solutions.</p>
+
+        <div class="grid md:grid-cols-3 gap-12">
+            {% for product in products %}
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-72 object-cover rounded-t-lg">
+            {% else %}
+                <img src="/static/images/default-image.jpg" alt="No Image Available" class="w-full h-72 object-cover rounded-t-lg">
+            {% endif %}            
+                <h3 class="text-xl font-semibold text-gray-800 mt-4 mb-2">{{ product.name }}</h3>
+                <a href="{% url 'product_detail' product.id %}" 
+                   class="inline-block bg-blue-600 text-white font-bold px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition">
+                    View Details
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Why Choose Us Section -->
+<section class="py-12 bg-gray-100">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-8">Why Choose Us?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for point in why_choose_us %}
+            <div class="bg-green-500 shadow-lg rounded-lg p-6 text-center" style="background-color: #80c8ee;">
+                {% if point.icon %}
+                <img src="{{ point.icon.url }}" alt="{{ point.title }}" class="w-20 h-20 mx-auto mb-4">
+                {% endif %}
+                <h3 class="text-xl font-semibold">{{ point.title }}</h3>
+                <p class="text-gray-700 mt-2">{{ point.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">What Our Clients Say</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for testimonial in testimonials %}
+            <div class="bg-white p-6 shadow-lg rounded-lg">
+                <div class="flex items-center mb-4">
+                    {% if testimonial.image %}
+                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full mr-3">
+                    {% else %}
+                    <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-500">
+                        <span class="text-xl">😊</span>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h4 class="font-semibold text-lg justify-center items-center">{{ testimonial.name }}</h4>
+                        <p class="text-sm text-gray-500 ml-3">{{ testimonial.date_added|date:"F j, Y" }}</p>
+                    </div>
+                </div>
+                <p class="text-gray-700">"{{ testimonial.feedback }}"</p>
+
+                <!-- Star Rating -->
+                <div class="mt-4">
+                    {% for _ in "⭐"|ljust:testimonial.rating %}
+                    <span class="text-yellow-500 text-xl">★</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

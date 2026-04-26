@@ -1,0 +1,33 @@
+{% extends "home/basic.html" %}
+
+{% block content %}
+<section class="py-12 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Our Products & Services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for product in products %}
+            <a href="{% url 'product_detail' product.id %}" class="block">
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    {% with product.images.first as first_image %}
+                        {% if first_image %}
+                            <img src="{{ first_image.image.url }}" alt="{{ product.name }}" class="w-full h-56 object-cover">
+                        {% else %}
+                            <div class="w-full h-56 bg-gray-300 flex items-center justify-center text-gray-500">
+                                No Image Available
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold">{{ product.name }}</h3>
+                        <p class="text-gray-600 mt-2">{{ product.description }}</p>
+                        {% if product.price %}
+                        <p class="text-lg font-bold text-blue-600 mt-3">₹{{ product.price }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

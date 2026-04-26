@@ -1,0 +1,132 @@
+{% extends 'home/basic.html' %}
+
+{% block css %}
+<style>
+    .pdf-list {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .pdf-list li {
+        width: 30%;
+        margin: 10px 0;
+        text-align: center;
+    }
+
+    .pdf-list a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s;
+    }
+
+    .pdf-list a:hover {
+        transform: scale(1.02);
+    }
+
+    .pdf-container {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        text-align: center; /* Center align */
+        display: flex;
+        justify-content: center;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .pdf-container canvas {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto; /* Center the canvas */
+    }
+
+    .pdf-title {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #0966ff;
+    }
+
+    @media (max-width: 768px) {
+        .pdf-list li {
+            width: 48%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .pdf-list li {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block title %}PDFs for {{ category.name }}{% endblock %}
+
+{% block content %}
+{% if pdfs %}
+    <ul class="pdf-list">
+        {% for pdf in pdfs %}
+            <li>
+                <a href="{{ pdf.file.url }}" target="_blank">
+                    <div class="pdf-container" data-pdf-url="{{ pdf.file.url }}"></div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No PDFs available for this category.</p>
+{% endif %}
+{% endblock %}
+
+{% block js %}
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        // Set the global worker for PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js";
+
+        // Select all PDF containers dynamically
+        const pdfContainers = document.querySelectorAll(".pdf-container");
+
+        pdfContainers.forEach(async (container) => {
+            const pdfUrl = container.getAttribute("data-pdf-url");
+
+            try {
+                // Load PDF
+                const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+                const page = await pdf.getPage(1); // Load the first page
+
+                // Get container width and scale PDF accordingly
+                let containerWidth = container.offsetWidth || 800; // Default width if not set
+                let scale = containerWidth / page.getViewport({ scale: 1 }).width;
+                let viewport = page.getViewport({ scale });
+
+                // Create canvas element for rendering
+                let canvas = document.createElement("canvas");
+                let context = canvas.getContext("2d");
+
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                canvas.style.maxWidth = "100%"; // Make it responsive
+                canvas.style.display = "block"; // Prevent extra spaces
+
+                container.appendChild(canvas);
+
+                // Render PDF to canvas
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+            } catch (error) {
+                console.error("Error loading PDF:", error);
+                container.innerHTML = "<p style='color: red;'>Failed to load PDF</p>";
+            }
+        });
+    });
+</script>
+{% endblock %}

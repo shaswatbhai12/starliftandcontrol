@@ -1,0 +1,85 @@
+{% extends "home/basic.html" %}
+
+{% block content %}
+
+<body class="bg-gray-100">
+
+<div class="container mx-auto py-10 px-4">
+
+<!-- PRODUCT SECTION -->
+<div class="flex flex-col md:flex-row items-center md:items-start gap-10">
+
+    <!-- LEFT: PRODUCT IMAGE -->
+    <div class="md:w-1/2 flex justify-center">
+        <img src="{{ product.image.url }}" 
+             alt="{{ product.name }}" 
+             class="w-full max-w-md h-80 object-cover rounded-xl shadow-lg">
+    </div>
+
+    <!-- RIGHT: PRODUCT DETAILS -->
+    <div class="md:w-1/2 text-center md:text-left">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">
+            {{ product.name }}
+        </h1>
+        <p class="text-gray-700 text-lg leading-relaxed">
+            {{ product.description }}
+        </p>
+    </div>
+
+</div>
+
+
+<!-- GALLERY TITLE -->
+<h2 class="text-2xl md:text-3xl font-bold mt-12 text-center">
+    Gallery - {{ product.name }}
+</h2>
+
+
+<!-- GALLERY SECTION -->
+{% if product.gallery.all %}
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-6">
+
+    {% for image in product.gallery.all %}
+    <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col hover:shadow-xl transition duration-300">
+
+        <!-- IMAGE -->
+        <a href="{% url 'contact' %}?product={{ product.id }}&sub_product={{ image.id }}">
+            <img src="{{ image.image.url }}" 
+                 alt="{{ image.description }}" 
+                 class="w-full h-64 object-cover">
+        </a>
+
+        <!-- DESCRIPTION BUTTON -->
+        <div class="p-3 flex-grow flex items-center justify-center">
+            {% if image.description %}
+            <a href="{% url 'contact' %}?product={{ product.id }}&sub_product={{ image.id }}"
+               class="w-full text-center bg-blue-600 text-white py-2 px-3 text-sm font-semibold rounded-md hover:bg-blue-700 transition">
+                {{ image.description }}
+            </a>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+{% else %}
+    <p class="text-gray-500 text-center mt-6">
+        No additional images available.
+    </p>
+{% endif %}
+
+
+<!-- BACK BUTTON -->
+<div class="mt-10 text-center">
+    <a href="{% url 'home' %}" 
+       class="inline-block bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-300 shadow-md">
+        ← Back to Home
+    </a>
+</div>
+```
+
+</div>
+
+</body>
+{% endblock %}

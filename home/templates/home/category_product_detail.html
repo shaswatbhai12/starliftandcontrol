@@ -1,0 +1,49 @@
+{% extends "home/basic.html" %}
+
+{% block content %}
+<body class="bg-gray-100">
+    <div class="container mx-auto py-10 px-4">
+        <!-- Main Product Name -->
+        <h1 class="text-3xl font-bold mb-4 text-center">{{ product.name }}</h1>
+        <p class="text-gray-700 mb-6 text-center">{{ product.description }}</p>
+
+        <!-- Main Product Image -->
+        <div class="flex justify-center">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-96 rounded-lg shadow-lg">
+        </div>
+
+        <!-- Gallery Section -->
+        <h2 class="text-2xl font-bold mt-8 text-center">Gallery - {{ product.name }}</h2>
+
+        {% if product.gallery.all %}
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                {% for image in product.gallery.all %}
+                <div class="overflow-hidden rounded-lg shadow-lg text-center">
+                    <a href="{% url 'contact' %}?product={{ product.id }}&sub_product={{ image.id }}">
+                        <img src="{{ image.image.url }}" alt="{{ image.description }}" class="w-full h-18px rounded-lg">
+                    </a>
+                    {% if image.description %}
+                        <div class="flex justify-center mt-2">
+                            <a href="{% url 'contact' %}?product={{ product.id }}&sub_product={{ image.id }}"
+                               class="px-6 py-3 bg-blue-600 text-white text-lg font-bold rounded-lg shadow-md hover:bg-blue-700 border-2 border-black">
+                                {{ image.description }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-center">No additional images available.</p>
+        {% endif %}
+
+<!-- Back Button -->
+        <div class="mt-6 text-center">
+            <a href="{% url 'home' %}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                 ← Back to Home
+            </a>
+        </div>
+
+    </div>
+</body>
+{% endblock %}

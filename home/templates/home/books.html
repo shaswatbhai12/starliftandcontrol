@@ -1,0 +1,12 @@
+<h1>Books Authored by Me</h1>
+<div class="books-list">
+    {% for book in books %}
+        <div class="book">
+            <a href="{{ book.pdf_file.url }}" target="_blank">
+                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+            </a>
+            <h2>{{ book.title }}</h2>
+            <p>{{ book.description }}</p>
+        </div>
+    {% endfor %}
+</div>

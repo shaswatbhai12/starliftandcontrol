@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Star Lift & Controller{% endblock %}</title>
+    
+    <link rel="shortcut icon" href="{% static 'logo1.png' %}" type="image/x-icon">
+    
+    <!-- Tailwind + Alpine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        /* Marquee */
+        .marquee-container { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background-color: #f02222; 
+            color: white; 
+            padding: 8px 0; 
+            z-index: 999; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            font-weight: 700; 
+        }
+        .marquee-text { 
+            display: inline-block; 
+            animation: marquee 15s linear infinite; 
+        }
+        @keyframes marquee { 
+            0% { transform: translateX(100%); } 
+            100% { transform: translateX(-100%); } 
+        }
+
+        body { padding-bottom: 4rem; }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- NAVBAR -->
+<header x-data="{ open: false }" class="bg-white shadow-md sticky top-0 z-50">
+    
+    <div class="container mx-auto flex items-center justify-between p-4 relative">
+        
+        <!-- Logo -->
+        <a href="/" class="flex items-center text-gray-900">
+            <img src="{% static 'logo1.png' %}" class="w-10 h-10 object-contain">
+            <span class="ml-2 text-lg md:text-2xl font-bold text-indigo-700">
+                STAR LIFT & CONTROLLER
+            </span>
+        </a>
+
+        <!-- Hamburger -->
+        <button @click="open = !open" class="md:hidden text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 class="h-7 w-7" 
+                 fill="none" 
+                 viewBox="0 0 24 24" 
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-6">
+            <nav class="flex space-x-6 font-semibold">
+                <a href="{% url 'home' %}" class="hover:text-indigo-600">Home</a>
+                <a href="{% url 'services' %}" class="hover:text-indigo-600">Services</a>
+
+                <!-- GALLERY DROPDOWN -->
+                <div x-data="{ dropdown: false }" class="relative">
+                    <button @click="dropdown = !dropdown"
+                            @click.away="dropdown = false"
+                            class="hover:text-indigo-600 flex items-center gap-1">
+                        Gallery
+                        <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div x-show="dropdown"
+                         x-transition
+                         class="absolute left-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2 z-50">
+                        <a href="{% url 'gallery' %}?type=all" class="block px-4 py-2 hover:bg-gray-100">All</a>
+                        <a href="{% url 'gallery' %}?type=photos" class="block px-4 py-2 hover:bg-gray-100">Images</a>
+                        <a href="{% url 'gallery' %}?type=videos" class="block px-4 py-2 hover:bg-gray-100">Videos</a>
+                    </div>
+                </div>
+
+                <a href="{% url 'contact_us' %}" class="hover:text-indigo-600">Contact</a>
+                <a href="{% url 'about' %}" class="hover:text-indigo-600">About</a>
+            </nav>
+
+            <button onclick="openModal()" 
+                class="bg-red-600 px-5 py-2 rounded text-white font-bold hover:bg-red-700">
+                Quick Enquiry
+            </button>
+        </div>
+    </div>
+
+    <!-- MOBILE MENU -->
+    <div x-show="open"
+         x-transition
+         @click.away="open = false"
+         class="md:hidden absolute top-full left-0 w-full bg-white shadow-lg px-6 py-6 space-y-4 text-center">
+
+        <a @click="open=false" href="{% url 'home' %}" class="block font-semibold text-lg">Home</a>
+        <a @click="open=false" href="{% url 'services' %}" class="block font-semibold text-lg">Services</a>
+
+        <div x-data="{ mobileDropdown: false }">
+            <button @click="mobileDropdown = !mobileDropdown" class="w-full font-semibold text-lg">
+                Gallery ▼
+            </button>
+
+            <div x-show="mobileDropdown" class="mt-2 space-y-2">
+                <a @click="open=false" href="{% url 'gallery' %}" class="block">All</a>
+                <a @click="open=false" href="{% url 'gallery' %}?type=photos" class="block">Images</a>
+                <a @click="open=false" href="{% url 'gallery' %}?type=videos" class="block">Videos</a>
+            </div>
+        </div>
+
+        <a @click="open=false" href="{% url 'contact_us' %}" class="block font-semibold text-lg">Contact</a>
+        <a @click="open=false" href="{% url 'about' %}" class="block font-semibold text-lg">About</a>
+
+        <button onclick="openModal()" 
+            class="w-full bg-red-600 py-3 rounded text-white font-bold">
+            Quick Enquiry
+        </button>
+    </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- FOOTER -->
+{% include 'home/footer.html' %}
+
+<!-- FLOATING CONTACT BUTTONS (YOUR LOGOS) -->
+<div class="fixed bottom-20 right-5 flex flex-col gap-3 z-[999]">
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/919868051925?text=Hello%20I%20want%20to%20enquire%20about%20your%20lift%20services" target="_blank"
+       class="bg-white p-2 rounded-full shadow-lg hover:scale-110 transition">
+        <img src="{% static 'whatsapp.png' %}" 
+             alt="WhatsApp" 
+             class="w-12 h-12 object-contain">
+    </a>
+
+    <!-- Phone -->
+    <a href="tel:+919868051925"
+       class="bg-white p-2 rounded-full shadow-lg hover:scale-110 transition">
+        <img src="{% static 'phone.jpg' %}" 
+             alt="Call" 
+             class="w-12 h-12 object-contain">
+    </a>
+
+</div>
+
+<!-- MODAL -->
+<div id="quoteModal" class="fixed inset-0 bg-black/80 flex justify-center items-center hidden z-[1000] p-4">
+    <div class="bg-red-600 w-full max-w-4xl rounded-xl shadow-2xl relative overflow-hidden border border-red-500">
+        {% include 'home/quick_enquiry.html' %}
+    </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-container">
+    <div class="marquee-text uppercase text-xs tracking-widest">
+        Safety First | Premium Quality Elevators | 24/7 Maintenance Support | Trusted by 500+ Clients | Modern Technology | Star Lift & Controller
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+    function openModal() { 
+        document.getElementById('quoteModal').classList.remove('hidden'); 
+    }
+    function closeModal() { 
+        document.getElementById('quoteModal').classList.add('hidden'); 
+    }
+
+    window.onclick = function(e) { 
+        if(e.target == document.getElementById('quoteModal')) {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+{% extends 'home/basic.html' %}
+{% load static %}
+
+{% block title %}About Us - Star Lift and Controller{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 py-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+        <!-- Heading -->
+        <h1 class="text-4xl font-bold text-center text-gray-800">About Us</h1>
+        <p class="text-lg text-gray-600 text-center mt-4 max-w-3xl mx-auto">
+            Star Lift and Controller is a leading provider of advanced elevator and lift solutions, 
+            committed to delivering high-quality, safe, and innovative vertical transportation systems.
+        </p>
+
+        <!-- ================= WHO WE ARE ================= -->
+        <div class="mt-16 flex flex-col md:flex-row items-center gap-12 bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+            
+            <!-- Image -->
+            <div class="md:w-1/2 overflow-hidden rounded-xl">
+                <img src="{% static 'download.jpeg' %}" 
+                     alt="Who We Are"
+                     class="w-full h-[350px] object-cover transform hover:scale-110 transition duration-500">
+            </div>
+
+            <!-- Text -->
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 border-l-4 border-blue-600 pl-4">
+                    Who We Are
+                </h2>
+                
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    With years of expertise in the elevator industry, 
+                    <span class="font-semibold text-gray-800">Star Lift and Controller</span> 
+                    delivers high-performance lift solutions tailored for residential, commercial, and industrial needs.
+                </p>
+
+                <p class="text-gray-600 mt-4 leading-relaxed">
+                    We focus on <span class="text-blue-600 font-medium">safety, innovation, and reliability</span>, 
+                    ensuring every installation meets international standards while providing smooth and efficient mobility.
+                </p>
+
+            
+            </div>
+        </div>
+
+        <!-- ================= OUR MISSION ================= -->
+        <div class="mt-16 flex flex-col md:flex-row-reverse items-center gap-12 bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+            
+            <!-- Image -->
+            <div class="md:w-1/2 overflow-hidden rounded-xl">
+                <img src="{% static 'download.jpeg' %}" 
+                     alt="Mission"
+                     class="w-full h-[350px] object-cover transform hover:scale-110 transition duration-500">
+            </div>
+
+            <!-- Text -->
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4 border-l-4 border-blue-600 pl-4">
+                    Our Mission
+                </h2>
+                
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    Our mission is to revolutionize vertical mobility with cutting-edge technology, 
+                    exceptional safety standards, and superior customer service.
+                </p>
+
+                <p class="text-gray-600 mt-4 leading-relaxed">
+                    We aim to enhance accessibility and convenience through reliable and energy-efficient elevator solutions.
+                </p>
+            </div>
+        </div>
+
+        <!-- ================= WHY CHOOSE US ================= -->
+        <div class="mt-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800">Why Choose Us?</h2>
+
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
+                    <h3 class="text-xl font-semibold text-gray-800">✅ Quality Assurance</h3>
+                    <p class="text-gray-600 mt-2">
+                        We use the highest-grade materials and follow strict safety standards.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
+                    <h3 class="text-xl font-semibold text-gray-800">✅ Customization</h3>
+                    <p class="text-gray-600 mt-2">
+                        Tailor-made lift solutions for every requirement.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
+                    <h3 class="text-xl font-semibold text-gray-800">✅ Innovative Technology</h3>
+                    <p class="text-gray-600 mt-2">
+                        Advanced systems for smooth and efficient performance.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
+                    <h3 class="text-xl font-semibold text-gray-800">✅ Expert Team</h3>
+                    <p class="text-gray-600 mt-2">
+                        Skilled professionals ensuring perfect installation.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition text-center">
+                    <h3 class="text-xl font-semibold text-gray-800">✅ 24/7 Support</h3>
+                    <p class="text-gray-600 mt-2">
+                        Round-the-clock assistance for uninterrupted service.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= SAFETY ================= -->
+        <div class="mt-16 text-center bg-white p-10 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-800">Our Commitment to Safety</h2>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                Safety is our top priority. Every lift undergoes rigorous testing and meets global safety regulations 
+                to ensure secure and reliable operation.
+            </p>
+        </div>
+
+        <!-- ================= VISION ================= -->
+        <div class="mt-16 text-center bg-white p-10 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-800">Our Vision</h2>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                To be a global leader in elevator solutions, setting benchmarks in quality, innovation, and customer satisfaction.
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
