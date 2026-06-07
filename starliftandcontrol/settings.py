@@ -20,6 +20,7 @@ ALLOWED_HOSTS = [
     'bold-blowfish-uniformly.ngrok-free.app',
     'starliftandcontroller.xyz', 
     'www.starliftandcontroller.xyz',
+    'https://starliftandcontrol.vercel.app/',
     '.onrender.com', # This allows Render's internal health checks
     '.starliftandcontroller.xyz'
 ]
