@@ -21,6 +21,7 @@ ALLOWED_HOSTS = [
     'starliftandcontroller.xyz', 
     'www.starliftandcontroller.xyz',
     'https://starliftandcontrol.vercel.app/',
+    '.vercel.app',
     '.onrender.com', # This allows Render's internal health checks
     '.starliftandcontroller.xyz'
 ]
