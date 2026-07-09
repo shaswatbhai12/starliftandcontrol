@@ -8,12 +8,6 @@
     <p class="text-center text-gray-600">{{ job.location }}</p>
     <p class="mt-4">{{ job.description }}</p>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="p-4 bg-green-100 text-green-700 mt-4 rounded">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-
     <form method="POST" enctype="multipart/form-data" class="mt-6 bg-gray-100 p-6 rounded shadow-md">
         {% csrf_token %}
         {{ form.as_p }}

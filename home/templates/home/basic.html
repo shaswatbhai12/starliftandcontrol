@@ -15,6 +15,15 @@
     <style>
         html { scroll-behavior: smooth; }
 
+        .toast-enter {
+            animation: toast-enter 0.25s ease-out;
+        }
+
+        @keyframes toast-enter {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Marquee */
         .marquee-container { 
             position: fixed; 
@@ -44,6 +53,32 @@
 
 <body class="bg-gray-50 text-gray-800">
 
+{% if messages %}
+<div class="fixed top-5 right-5 z-[1100] w-[calc(100vw-2rem)] max-w-sm space-y-3" id="toast-stack">
+    {% for message in messages %}
+    <div class="toast-enter rounded-xl border bg-white/95 px-4 py-3 shadow-2xl backdrop-blur"
+         data-toast
+         data-toast-timeout="4000">
+        <div class="flex items-start gap-3">
+            <div class="mt-1 h-3 w-3 rounded-full flex-shrink-0
+                {% if message.tags == 'success' %}bg-emerald-500{% elif message.tags == 'error' %}bg-red-500{% elif message.tags == 'warning' %}bg-amber-500{% else %}bg-blue-500{% endif %}"></div>
+            <div class="flex-1">
+                <p class="text-sm font-semibold text-gray-900 capitalize">
+                    {% if message.tags == 'success' %}Success{% elif message.tags == 'error' %}Error{% elif message.tags == 'warning' %}Warning{% else %}Notice{% endif %}
+                </p>
+                <p class="text-sm text-gray-700">{{ message }}</p>
+            </div>
+            <button type="button" aria-label="Dismiss notification"
+                    class="ml-2 text-gray-400 transition hover:text-gray-700"
+                    onclick="dismissToast(this.closest('[data-toast]'))">
+                ×
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 <!-- NAVBAR -->
 <header x-data="{ open: false }" class="bg-white shadow-md sticky top-0 z-50">
     
@@ -56,31 +91,32 @@
                 STAR LIFT & CONTROLLER
             </span>
         </a>
-
+        
         <!-- Hamburger -->
         <button @click="open = !open" class="md:hidden text-gray-700">
             <svg xmlns="http://www.w3.org/2000/svg" 
-                 class="h-7 w-7" 
-                 fill="none" 
-                 viewBox="0 0 24 24" 
-                 stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-        </button>
-
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center space-x-6">
-            <nav class="flex space-x-6 font-semibold">
-                <a href="{% url 'home' %}" class="hover:text-indigo-600">Home</a>
-                <a href="{% url 'services' %}" class="hover:text-indigo-600">Services</a>
-
-                <!-- GALLERY DROPDOWN -->
-                <div x-data="{ dropdown: false }" class="relative">
-                    <button @click="dropdown = !dropdown"
-                            @click.away="dropdown = false"
-                            class="hover:text-indigo-600 flex items-center gap-1">
-                        Gallery
+            class="h-7 w-7" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+    
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex items-center space-x-6">
+        <nav class="flex space-x-6 font-semibold">
+            <a href="{% url 'home' %}" class="hover:text-indigo-600">Home</a>
+            <a href="{% url 'about' %}" class="hover:text-indigo-600">About</a>
+            <a href="{% url 'services' %}" class="hover:text-indigo-600">Services</a>
+            
+            <!-- GALLERY DROPDOWN -->
+            <div x-data="{ dropdown: false }" class="relative">
+                <button @click="dropdown = !dropdown"
+                @click.away="dropdown = false"
+                class="hover:text-indigo-600 flex items-center gap-1">
+                Gallery
                         <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M19 9l-7 7-7-7" />
@@ -97,7 +133,6 @@
                 </div>
 
                 <a href="{% url 'contact_us' %}" class="hover:text-indigo-600">Contact</a>
-                <a href="{% url 'about' %}" class="hover:text-indigo-600">About</a>
             </nav>
 
             <button onclick="openModal()" 
@@ -109,11 +144,12 @@
 
     <!-- MOBILE MENU -->
     <div x-show="open"
-         x-transition
-         @click.away="open = false"
-         class="md:hidden absolute top-full left-0 w-full bg-white shadow-lg px-6 py-6 space-y-4 text-center">
-
-        <a @click="open=false" href="{% url 'home' %}" class="block font-semibold text-lg">Home</a>
+    x-transition
+    @click.away="open = false"
+    class="md:hidden absolute top-full left-0 w-full bg-white shadow-lg px-6 py-6 space-y-4 text-center">
+    
+    <a @click="open=false" href="{% url 'home' %}" class="block font-semibold text-lg">Home</a>
+    <a @click="open=false" href="{% url 'about' %}" class="block font-semibold text-lg">About</a>
         <a @click="open=false" href="{% url 'services' %}" class="block font-semibold text-lg">Services</a>
 
         <div x-data="{ mobileDropdown: false }">
@@ -129,7 +165,6 @@
         </div>
 
         <a @click="open=false" href="{% url 'contact_us' %}" class="block font-semibold text-lg">Contact</a>
-        <a @click="open=false" href="{% url 'about' %}" class="block font-semibold text-lg">About</a>
 
         <button onclick="openModal()" 
             class="w-full bg-red-600 py-3 rounded text-white font-bold">
@@ -183,6 +218,27 @@
 
 <!-- SCRIPTS -->
 <script>
+    function dismissToast(toast) {
+        if (!toast) return;
+
+        toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+
+        window.setTimeout(() => {
+            if (toast && toast.parentNode) {
+                toast.remove();
+            }
+        }, 250);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-toast]').forEach((toast, index) => {
+            const timeout = Number(toast.dataset.toastTimeout || 4000) + (index * 150);
+            window.setTimeout(() => dismissToast(toast), timeout);
+        });
+    });
+
     function openModal() { 
         document.getElementById('quoteModal').classList.remove('hidden'); 
     }

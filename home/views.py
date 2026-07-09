@@ -101,6 +101,8 @@ def contact_us(request):
         form.save()
         messages.success(request, "Your inquiry has been submitted successfully!")
         return redirect("thank_you_page")
+    elif request.method == "POST":
+        messages.error(request, "Please fix the errors in the form and try again.")
     return render(request, "home/contact_us.html", {"form": form, "business_hours": business_hours})
 
 def subscribe(request):
@@ -114,7 +116,7 @@ def subscribe(request):
                 subscriber = form.save()
 
                 # ✅ Send Professional Thank You Email
-                subject = "Welcome to Star Lift & Controlller 🚀"
+                subject = "Welcome to Star Lift & Controller 🚀"
 
                 html_content = render_to_string(
                     "emails/thank_you.html",
@@ -124,7 +126,7 @@ def subscribe(request):
                 email_msg = EmailMultiAlternatives(
                     subject,
                     "Thank you for subscribing.",
-                    settings.EMAIL_HOST_USER,
+                    settings.DEFAULT_FROM_EMAIL,
                     [email],
                 )
 
@@ -171,6 +173,7 @@ def apply_for_job(request, job_id):
             application.save()
             messages.success(request, "Your application has been submitted successfully!")
             return redirect("careers")  # Redirect to careers page
+        messages.error(request, "Please correct the application form and submit again.")
 
     else:
         form = JobApplicationForm()
@@ -232,13 +235,13 @@ from django.core.mail import send_mail
 def send_newsletter(request):
     subscribers = Subscription.objects.values_list('email', flat=True)
 
-    subject = "Latest Update from Star Lift & Control 🚀"
+    subject = "Latest Update from Star Lift & Controller 🚀"
     message = "We have exciting updates and offers for you. Stay tuned!"
 
     send_mail(
         subject,
         message,
-        settings.EMAIL_HOST_USER,
+        settings.DEFAULT_FROM_EMAIL,
         list(subscribers),
     )
 

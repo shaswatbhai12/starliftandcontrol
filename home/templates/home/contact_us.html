@@ -13,16 +13,6 @@
         <div class="bg-white p-8 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">Get in Touch</h3>
 
-            {% if messages %}
-                <div id="flash-messages">
-                    {% for message in messages %}
-                        <div class="message bg-green-100 text-green-700 p-2 rounded mb-4 text-center border border-green-300">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
             <form method="post" class="space-y-4">
                 {% csrf_token %}
 
@@ -69,17 +59,4 @@
         
 
         
-
-<!-- Auto-Dismiss Flash Messages -->
-<script>
-    setTimeout(() => {
-        const messages = document.getElementById("flash-messages");
-        if (messages) {
-            messages.style.transition = "opacity 0.5s";
-            messages.style.opacity = "0";
-            setTimeout(() => messages.remove(), 500);
-        }
-    }, 3000);
-</script>
-
 {% endblock %}
