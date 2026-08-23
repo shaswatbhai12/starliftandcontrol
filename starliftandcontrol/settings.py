@@ -94,6 +94,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com", # Added https:// and a wildcard *
     "https://*.starliftandcontroller.xyz", # Added https:// and a wildcard *
     'https://starliftandcontrol.vercel.app/',
+    "https://*.vercel.app"
 
 ]
 
