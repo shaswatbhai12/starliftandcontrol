@@ -93,6 +93,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://www.starliftandcontroller.xyz",
     "https://*.onrender.com", # Added https:// and a wildcard *
     "https://*.starliftandcontroller.xyz", # Added https:// and a wildcard *
+    'https://starliftandcontrol.vercel.app/',
 
 ]
 
@@ -139,7 +140,7 @@ EMAIL_HOST = 'smtp.resend.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'resend'
-EMAIL_HOST_PASSWORD = os.environ.get('RESEND_API_KEY', 're_9DymaYc1_B8xVScahj2qv89AFr5YyfzDc')
+EMAIL_HOST_PASSWORD = os.environ.get('RESEND_API_KEY', '')
 
 DEFAULT_FROM_EMAIL = os.environ.get(
     'DEFAULT_FROM_EMAIL',
